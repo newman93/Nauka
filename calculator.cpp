@@ -42,10 +42,10 @@ int p(char _c)
 	switch(_c)
 	{
 		case '+'     : ;
-        	case '-'     : return 1;
+        case '-'     : return 1;
 		case '*'     : ;
-        	case '/'     : return 2;
-    	}
+        case '/'     : return 2;
+    }
   
   	
   	return 0;
@@ -53,7 +53,7 @@ int p(char _c)
 
 void Calculator::transform_in()
 {
-	  char S[50];
+      char S[50];
       int sptr = 0;
       char c;
       
@@ -63,7 +63,7 @@ void Calculator::transform_in()
 		  	input_notation = 0;
 		  	output_notation = 1;
 		  	output = "";
-	  }
+      }
  
       for (unsigned int j = 0; j < input.size(); ++j)
       {
