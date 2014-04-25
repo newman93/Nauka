@@ -42,10 +42,10 @@ int p(char _c)
 	switch(_c)
 	{
 		case '+'     : ;
-        case '-'     : return 1;
-        case '*'     : ;
-        case '/'     : return 2;
-    }
+        	case '-'     : return 1;
+		case '*'     : ;
+        	case '/'     : return 2;
+    	}
   
   	
   	return 0;
