@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <functional>
+#include <stack>
 
 
 using namespace std;
@@ -37,59 +38,55 @@ Calculator::~Calculator()
 {
 }
 
-int p(char _c)
-{
-	switch(_c)
-	{
-		case '+': ;
-        case '-': 	return 1;
-		case '*': ;
-        case '/':	return 2;
-    }
-  
-  	
-  	return 0;
-}
-
 void Calculator::transform_in()
 {
-      char S[50];
-      int sptr = 0;
+	  stack<char> S;
       char c;
       
       if (input_notation == 1 && output_notation == 0)
       {
-	  	  	input = output;
-		  	input_notation = 0;
-		  	output_notation = 1;
-		  	output = "";
-      }
+		  input = output;
+		  input_notation = 0;
+		  output_notation = 1;
+		  output = "";
+	  }
+ 
+	  auto p = [](char _c)->int { switch(_c) { case '+': ; case '-': return 1; case '*': ; case '/': return 2; } return 0; };
  
       for (unsigned int j = 0; j < input.size(); ++j)
       {
-	  		c = input[j];
+			c = input[j];
 
             switch(c)
             {
-            	case '(':	S[sptr++] = '(';
-                            break;
-                case ')':	while(S[sptr-1] != '(')
-                           	output += S[--sptr];
-                           	sptr--;
-                           	break;
+                case '(' : S.push('(');
+                           break;
+                case ')' : while(S.top() != '(')
+						   {
+								output += S.top();
+								S.pop();
+						   }
+						   S.pop();
+                           break;
                 case '+' : ;
                 case '-' : ;
                 case '*' : ;
-                case '/' :	while(sptr && p(S[sptr-1]) > p(c))
-                           	output += S[--sptr];
-                           	S[sptr++] = c;
-                           	break;
-                default:   	output += c;
-                           	break;
+                case '/' : while(!S.empty() && p(S.top()) > p(c))
+						   {	
+								output += S.top();
+								S.pop();
+						   }
+                           S.push(c);
+                           break;
+                default:   output += c;
+                           break;
             }
       }
-      while (sptr)
-	  	output += S[--sptr];
+      while (!S.empty())
+      {
+			output += S.top();
+			S.pop();
+	  }
 	  output_notation = 1;
 }
 
@@ -100,14 +97,13 @@ void Calculator::transform_pn()
 			string ch;
 			struct S *prev;
 			struct S *next;
-		} *stack[50];
+		};
+		stack<struct S*> S;
 		
 		char c1,c2;
 		
 		struct S *op1,  *op2;
 		struct S *tmp;
-		
-		int sptr = 0;
 		
 		if (input_notation == 0 && output_notation == 1)
 		{
@@ -121,33 +117,32 @@ void Calculator::transform_pn()
 		
         for (unsigned int j =0; j < input.size(); ++j)
         {
-			c1 = input[j];
+				c1 = input[j];
 
-			if (c1 == '+' || c1 == '-' || c1 == '*' || c1 == '/')
-			{
-				c2 = input[j+1];
+				if (c1 == '+' || c1 == '-' || c1 == '*' || c1 == '/')
+				{
+					c2 = input[j+1];
 					if (c2 == '+' || c2 == '-' || c2 == '*' || c2 == '/')
 					{
-						op1 = stack[--sptr];
-						op2 = stack[--sptr];
+						op1 = S.top(); S.pop();
+						op2 = S.top(); S.pop();
 						tmp = new struct S;
 						tmp->ch = c1;
 						tmp->next = op1;
 						tmp->next->ch = tmp->next->ch + ')';
 						tmp->prev = op2;
 						tmp->prev->ch = '(' + tmp->prev->ch;
-						stack[sptr++] = tmp;
-						
+						S.push(tmp);
 					}
 					else
 					{
-						op1 = stack[--sptr];
-						op2 = stack[--sptr];
+						op1 = S.top(); S.pop();
+						op2 = S.top(); S.pop();
 						tmp = new struct S;
 						tmp->ch = c1;
 						tmp->next = op1;
 						tmp->prev = op2;
-						stack[sptr++] = tmp;
+						S.push(tmp);
 					}
 				}
 				else
@@ -156,10 +151,10 @@ void Calculator::transform_pn()
 					tmp->ch = c1;
 					tmp->next = NULL;
 					tmp->prev= NULL;
-					stack[sptr++] = tmp;
+					S.push(tmp);
 				}
         }
-        show_my(stack[--sptr]);
+        show_my(S.top());
         output_notation = 0;
 }
 
@@ -200,8 +195,7 @@ void Calculator::show_data()
 
 void Calculator::calculate()
 {
-	double  S[50];
-	int sptr = 0;
+	stack<double> S;
     double  a, b, w;
     char c;
 	
@@ -213,10 +207,11 @@ void Calculator::calculate()
 			c = input[i];
 
 			if(c >= 48 && c <= 57)
-				S[sptr++] = c - 48;
+				S.push(c - 48);
 			else
 			{
-				b = S[--sptr]; a = S[--sptr];
+				b = S.top(); S.pop(); 
+				a = S.top(); S.pop();
 				switch(c)
 				{
 					case '+': w = a + b; break;
@@ -224,10 +219,11 @@ void Calculator::calculate()
 					case '*': w = a * b; break;
 					case '/': w = a / b; break;
 				}
-				S[sptr++] = w;
+				S.push(w);
 			}
 		}
-		result = S[--sptr];
+		result = S.top();
+		S.pop();
 	}
 	else
 		cout << "Error" << endl;
@@ -281,4 +277,3 @@ int main()
 	
 	return 0;
 }
-
