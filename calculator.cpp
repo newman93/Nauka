@@ -41,10 +41,10 @@ int p(char _c)
 {
 	switch(_c)
 	{
-		case '+'     : ;
-        case '-'     : return 1;
-		case '*'     : ;
-        case '/'     : return 2;
+		case '+': ;
+        case '-': 	return 1;
+		case '*': ;
+        case '/':	return 2;
     }
   
   	
@@ -71,25 +71,25 @@ void Calculator::transform_in()
 
             switch(c)
             {
-            	case '(' : S[sptr++] = '(';
-                           break;
-                case ')' : while(S[sptr-1] != '(')
-                           output += S[--sptr];
-                           sptr--;
-                           break;
+            	case '(':	S[sptr++] = '(';
+                            break;
+                case ')':	while(S[sptr-1] != '(')
+                           	output += S[--sptr];
+                           	sptr--;
+                           	break;
                 case '+' : ;
                 case '-' : ;
                 case '*' : ;
-                case '/' : while(sptr && p(S[sptr-1]) > p(c))
-                           output += S[--sptr];
-                           S[sptr++] = c;
-                           break;
-                default:   output += c;
-                           break;
+                case '/' :	while(sptr && p(S[sptr-1]) > p(c))
+                           	output += S[--sptr];
+                           	S[sptr++] = c;
+                           	break;
+                default:   	output += c;
+                           	break;
             }
       }
       while (sptr)
-			output += S[--sptr];
+	  	output += S[--sptr];
 	  output_notation = 1;
 }
 
@@ -121,11 +121,11 @@ void Calculator::transform_pn()
 		
         for (unsigned int j =0; j < input.size(); ++j)
         {
-				c1 = input[j];
+			c1 = input[j];
 
-				if (c1 == '+' || c1 == '-' || c1 == '*' || c1 == '/')
-				{
-					c2 = input[j+1];
+			if (c1 == '+' || c1 == '-' || c1 == '*' || c1 == '/')
+			{
+				c2 = input[j+1];
 					if (c2 == '+' || c2 == '-' || c2 == '*' || c2 == '/')
 					{
 						op1 = stack[--sptr];
