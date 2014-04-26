@@ -22,7 +22,6 @@ class Calculator
 		void transform_in();
 		void calculate();
 		void show_data();
-		int show_result() { return result; } 
 };
 
 Calculator::Calculator(string _i, string _o, double _r, int _in, int _ot)
@@ -190,7 +189,7 @@ void Calculator::show_data()
 {	
 	cout << "Input: " << input <<  endl;
 	cout << "Output: " << output <<  endl;
-	cout << "Result: " << this->show_result() << endl;
+	cout << "Result: " << result << endl;
 }
 
 void Calculator::calculate()
