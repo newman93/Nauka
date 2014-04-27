@@ -1,3 +1,7 @@
+/*
+	Author: Adrian Kowalski
+*/
+
 #include <iostream>
 #include <string>
 #include <functional>
@@ -159,7 +163,7 @@ void Calculator::transform_pn()
 
 void Calculator::set()
 {
-	int choice{3}; 
+	int choice; 
 	
 	do
 	{
