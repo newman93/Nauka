@@ -1,3 +1,3 @@
 Nauka
 =====
-Repozytorium, w którym znajdują się programy wykonane w celach edukacyjnych.
+Repozytorium, w ktorym znajduja sie programy wykonane w celach edukacyjnych.
