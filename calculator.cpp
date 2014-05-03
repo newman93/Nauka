@@ -2,6 +2,117 @@
 	Author: Adrian Kowalski
 */
 
+#include <iostream>
+#include <string>
+#include <functional>
+#include <stack>
+
+
+using namespace std;
+
+class Calculator
+{
+	private:
+		string input;
+		string output;
+		int input_notation; // 0 - infix notation | 1 - postfix notation
+		int output_notation;
+		double result;
+	public:
+		Calculator(string _i = "", string _o = "", double _r = 0.0, int _in = 3, int _ot = 3);
+		~Calculator();
+		void set();
+		void transform_pn();
+		void transform_in();
+		void calculate();
+		void show_data();
+		void test();
+};
+
+Calculator::Calculator(string _i, string _o, double _r, int _in, int _ot)
+{
+	input = _i;
+	output = _o;
+	result = _r;
+	input_notation = _in;
+	output_notation = _ot;
+}
+
+Calculator::~Calculator()
+{
+}
+
+void Calculator::transform_in()
+{
+	  stack<char> S;
+      char c;
+      
+      if (input_notation == 1 && output_notation == 0)
+      {
+		  input = output;
+		  input_notation = 0;
+		  output_notation = 1;
+		  output = "";
+	  }
+ 
+	  auto p = [](char _c)->int { switch(_c) { case '+': ; case '-': return 1; case '*': ; case '/': return 2; } return 0; };
+ 
+      for (unsigned int j = 0; j < input.size(); ++j)
+      {
+			c = input[j];
+
+            switch(c)
+            {
+				case ' ' : break; 
+                case '(' : S.push('(');
+                           break;
+                case ')' : while(S.top() != '(')
+						   {
+								output += S.top();
+								S.pop();
+						   }
+						   S.pop();
+                           break;
+                case '+' : ;
+                case '-' : ;
+                case '*' : ;
+                case '/' : while(!S.empty() && p(S.top()) > p(c))
+						   {	
+								output += S.top();
+								S.pop();
+						   }
+                           S.push(c);
+                           break;
+                default:   output += c;
+                           break;
+            }
+      }
+      while (!S.empty())
+      {
+			output += S.top();
+			S.pop();
+	  }
+	  output_notation = 1;
+}
+
+void Calculator::transform_pn()
+{
+	char c;
+	string op1,op2;
+	stack<string> S;
+	
+	if (input_notation == 0 && output_notation == 1)
+	{
+		input = output;
+		input_notation = 1;
+		output = "";
+	}
+	
+	for (unsigned int i = 0; i < input.size(); ++i)
+	{
+		c = input[i];
+		
+		if ( c >= 48 && c <= 57)
 			S.push(string(1, c));
 		else if ( c == '+' || c == '-' || c == '*' || c == '/' )
 		{	
@@ -158,4 +269,3 @@ int main()
 
 	return 0;
 }
-
