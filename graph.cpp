@@ -171,7 +171,7 @@ void Graph::transform()
 				AM[i][*it] = 1;
 		}
 		representation = 2;
-	} else if (representation == 2)	//kurwa mac, jak to napisac?!
+	} else if (representation == 2)	
 	{
 		int e = 1;				//edge
 		for (int i = 1; i <= vertex; ++i)
