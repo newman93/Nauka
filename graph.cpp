@@ -102,14 +102,7 @@ void Graph::set()
 		}
 	} else if (representation == 3)
 	{
-		for (int i = 1; i <= edge; ++i)
-		{
-			cout << "o: "; 
-			cin >> v1;
-			cout << "i: ";
-			cin >> v2;
-			AL[v1].push_back(v2);
-		}
+	
 	} 
 }
 
@@ -168,6 +161,7 @@ void Graph::transform()
 			for (int j = 1; j <= vertex; ++j)
 				if (AM[i][j] == 1)
 					AL[i].push_back(j);
+		representation = 1;
 	}	
 	else if (representation == 1)
 	{
@@ -176,17 +170,48 @@ void Graph::transform()
 			for (list<int>::iterator it = AL[i].begin(); it != AL[i].end(); ++it)
 				AM[i][*it] = 1;
 		}
-	} else if
+		representation = 2;
+	} else if (representation == 2)	//kurwa mac, jak to napisac?!
+	{
+		int e = 1;				//edge
+		for (int i = 1; i <= vertex; ++i)
+			for (int j = 1; j <= vertex; ++j)
+				if (AM[i][j] == 1 && i != j)
+				{
+					IM[e][i] = -1;
+					IM[e][j] = 1;
+					++e;
+				}
+				else if (AM[i][j] == 1 && i == j)
+				{
+					IM[e][j] = 2;
+					++e;
+				}
+	} else if (representation == 3)
+	{
+	
+	}
 }
 
 int main()
 {
-	Graph g(6, 7, 2);
+	Graph g(6, 7, 0);
+	
 	g.set();
 
+	g.show();
+	
+	g.transform();
+	
+	g.show();
+	
+	g.transform();
+	g.transform();
+	
 	g.show();
  
 	cin.get();
 	cin.get();
 	return 0;
 }
+	
