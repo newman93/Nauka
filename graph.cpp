@@ -131,8 +131,7 @@ void Graph::show()
 				cout << " " << AM[i][j];
 			cout << endl;	
 		}
-	}
-	else if (representation == 1)
+	} else if (representation == 1)
 	{
 		cout << "Adjacency List" << endl;
 		for (int i = 1; i <= edge; ++i)
@@ -178,8 +177,7 @@ void Graph::transform()
 				if (AM[i][j] == 1)
 					AL[i].push_back(j);
 		representation = 1;
-	}	
-	else if (representation == 1)
+	} else if (representation == 1)
 	{
 		for (int i = 1; i <= vertex; ++i)
 		{
