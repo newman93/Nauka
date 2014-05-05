@@ -7,12 +7,6 @@
 
 using namespace std;
 
-typedef struct v
-{
-	string name;
-	int age;
-} VERTEX;
-
 class Graph
 {
 	private:
