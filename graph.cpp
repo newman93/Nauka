@@ -7,6 +7,12 @@
 
 using namespace std;
 
+typedef struct v
+{
+	string name;
+	int age;
+} VERTEX;
+
 class Graph
 {
 	private:
@@ -21,8 +27,8 @@ class Graph
 		Graph(int _v, int _e, int _r);
 		~Graph();
 		void set();
-		void show();
-		void transform();
+		void show(int _rep);
+		void transform_all();
 };
 
 Graph::Graph(int _v = 0, int _e = 0, int _r = 0) : vertex(_v), edge(_e), representation(_r) 
@@ -114,9 +120,9 @@ void Graph::set()
 	} 
 }
 
-void Graph::show()
+void Graph::show(int _rep)
 {
-	if (representation == 0)
+	if (_rep == 0)
 	{
 		cout << "Adjacency Matrix" << endl;
 		
@@ -131,7 +137,7 @@ void Graph::show()
 				cout << " " << AM[i][j];
 			cout << endl;	
 		}
-	} else if (representation == 1)
+	} else if (_rep == 1)
 	{
 		cout << "Adjacency List" << endl;
 		for (int i = 1; i <= edge; ++i)
@@ -141,7 +147,7 @@ void Graph::show()
 				cout << " " << *it;
 			cout << endl;
 		}
-	} else if (representation == 2)
+	} else if (_rep == 2)
 	{
 		cout << "Incidence Matrix" << endl;
 		cout << " ";
@@ -155,7 +161,7 @@ void Graph::show()
 				cout << " " <<  setw(3) << IM[i][j];
 			cout << endl;	
 		}
-	} else if (representation == 3)
+	} else if (_rep == 3)
 	{
 		cout << "Incidence List" << endl;
 		for (int i = 1; i <= vertex; ++i)
@@ -168,56 +174,52 @@ void Graph::show()
 	}
 }
 
-void Graph::transform()
+void Graph::transform_all()
 {
-	if (representation == 0)
-	{
-		for (int i = 1; i <= vertex; ++i)
+	int e = 1;                                     //edge
+	for (int i = 1; i <= vertex; ++i)
 			for (int j = 1; j <= vertex; ++j)
 				if (AM[i][j] == 1)
-					AL[i].push_back(j);
-		representation = 1;
-	} else if (representation == 1)
-	{
-		for (int i = 1; i <= vertex; ++i)
-		{
-			for (list<int>::iterator it = AL[i].begin(); it != AL[i].end(); ++it)
-				AM[i][*it] = 1;
-		}
-		representation = 2;
-	} else if (representation == 2)	
-	{
-		int e = 1;				//edge
-		for (int i = 1; i <= vertex; ++i)
+				{
+					AL[e].push_back(i);
+					AL[e].push_back(j);
+					++e;
+				}
+	e = 1;				
+	for (int i = 1; i <= vertex; ++i)
+		for (int j = 1; j <= vertex; ++j)
+			if (AM[i][j] == 1 && i != j)
+			{
+				IM[e][i] = -1;
+				IM[e][j] = 1;
+				++e;
+			} else if (AM[i][j] == 1 && i == j)
+			{
+				IM[e][j] = 2;
+				++e;
+			}
+	for (int i = 1; i <= vertex; ++i)
 			for (int j = 1; j <= vertex; ++j)
-				if (AM[i][j] == 1 && i != j)
-				{
-					IM[e][i] = -1;
-					IM[e][j] = 1;
-					++e;
-				}
-				else if (AM[i][j] == 1 && i == j)
-				{
-					IM[e][j] = 2;
-					++e;
-				}
-	} else if (representation == 3)
-	{
-	
-	}
+				if (AM[i][j] == 1)
+					IL[i].push_back(j);
 }
 
 int main()
 {
-	Graph g(6, 7, 1);
+	Graph g(6, 7, 0);
 	
 	g.set();
-
-	g.show();
 	
- 
+	g.transform_all();
+
+	g.show(0);
+	g.show(1);
+	g.show(2);
+	g.show(3);
+	
 	cin.get();
 	cin.get();
+	
 	return 0;
 }
 	
