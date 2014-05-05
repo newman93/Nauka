@@ -35,7 +35,7 @@ Graph::Graph(int _v = 0, int _e = 0, int _r = 0) : vertex(_v), edge(_e), represe
 			for (int j = 1; j <= vertex; ++j)
 				AM[i][j] = 0;
 	//adjacency list
-		AL = new list<int> [vertex+1];
+		AL = new list<int> [edge+1];
 	//incidence matrix
 		IM = new int * [edge];
 		for (int i = 1; i <= edge; ++i)
@@ -49,11 +49,11 @@ Graph::Graph(int _v = 0, int _e = 0, int _r = 0) : vertex(_v), edge(_e), represe
 
 Graph::~Graph()
 {
-	 for(int i = 1; i <= vertex; ++i)
+	for(int i = 0; i <= vertex; ++i)
          delete[] AM[i];
     delete[] AM;
     delete[] AL;
-    for(int i = 1; i <= edge; ++i)
+    for(int i = 0; i <= edge; ++i)
          delete[] IM[i];
     delete[] IM;
     delete[] IL;
@@ -82,7 +82,8 @@ void Graph::set()
 			cin >> v1;
 			cout << "i: ";
 			cin >> v2;
-			AL[v1].push_back(v2);
+			AL[i].push_back(v1);
+			AL[i].push_back(v2);
 		}
 	} else if (representation == 2)
 	{
@@ -102,7 +103,14 @@ void Graph::set()
 		}
 	} else if (representation == 3)
 	{
-	
+		for (int i = 1; i <= edge; ++i)
+		{
+			cout << "o: "; 
+			cin >> v1;
+			cout << "i: ";
+			cin >> v2;
+			IL[v1].push_back(v2);
+		}
 	} 
 }
 
@@ -127,7 +135,7 @@ void Graph::show()
 	else if (representation == 1)
 	{
 		cout << "Adjacency List" << endl;
-		for (int i = 1; i <= vertex; ++i)
+		for (int i = 1; i <= edge; ++i)
 		{
 			cout << i << ":";
 			for (list<int>::iterator it = AL[i].begin(); it != AL[i].end(); ++it)
@@ -150,6 +158,14 @@ void Graph::show()
 		}
 	} else if (representation == 3)
 	{
+		cout << "Incidence List" << endl;
+		for (int i = 1; i <= vertex; ++i)
+		{
+			cout << i << ":";
+			for (list<int>::iterator it = IL[i].begin(); it != IL[i].end(); ++it)
+				cout << " " << *it;
+			cout << endl;
+		}
 	}
 }
 
@@ -195,20 +211,12 @@ void Graph::transform()
 
 int main()
 {
-	Graph g(6, 7, 0);
+	Graph g(6, 7, 1);
 	
 	g.set();
 
 	g.show();
 	
-	g.transform();
-	
-	g.show();
-	
-	g.transform();
-	g.transform();
-	
-	g.show();
  
 	cin.get();
 	cin.get();
