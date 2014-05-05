@@ -55,11 +55,11 @@ Graph::Graph(int _v = 0, int _e = 0, int _r = 0) : vertex(_v), edge(_e), represe
 
 Graph::~Graph()
 {
-	for(int i = 0; i <= vertex; ++i)
+    for(int i = 0; i <= vertex; ++i)
          delete[] AM[i];
     delete[] AM;
     delete[] AL;
-    for(int i = 0; i <= edge; ++i)
+    for(int i = 0; i <= edge; ++i)	//
          delete[] IM[i];
     delete[] IM;
     delete[] IL;
