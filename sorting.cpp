@@ -101,15 +101,15 @@ void Sort::swap(int & _a, int & _b)
 void Sort::show()
 {
 	for (int i = 0; i < size; ++i)
-		std::cout << " " << tab[i];
-	std::cout << std::endl; 
+		cout << " " << tab[i];
+	cout << endl; 
 };
 
 void Sort::insert_sort()
 {
 	for (int i = 1; i < size; ++i)
 	{
-		int j = i;	//fragment [0..,i-1] jest juz posortowany
+		int j = i;	
 		int tmp = tab[j];
 		
 		while ( (j > 0) && (tab[j-1] > tmp))
@@ -246,12 +246,12 @@ void Sort::randomize()
 {
 	srand(time(NULL));
 	for (int i = 0; i < size; ++i)
-		tab[i] = std::rand() % 50;
+		tab[i] = rand() % 50;
 };
 	
 void randomize(int _t[], int _r)
 {
 	srand(time(NULL));
 	for (int i = 0; i < _r; ++i)
-		_t[i] = std::rand() % 50;
+		_t[i] = rand() % 50;
 };
