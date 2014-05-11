@@ -3,61 +3,60 @@
 */
 #include <iostream>
 #include <iomanip>
-#include <list>
+#include <vector>
 
 using namespace std;
 
 class Graph
 {
 	private:
-		int **AM;		//dynamic allocation  | adjacency matrix
-		list<int> *AL;		// list | adjacency list
-		int **IM;		//dynamic allociation | incidence matrix
-		list<int> *IL;		// list | incidence list
+		vector<vector <int>> AM;	// adjacency matrix
+		vector<vector <int>> AL;	// adjacency list
+		vector<vector <int>> IM;	// incidence matrix
+		vector<vector <int>> IL;	// incidence list
 		int vertex;
 		int edge;
-		int representation;	//0 - adjacency matrix | 1 - adjacency list | 2 - incidence matrix | 3 - incidence list | 4 - all
+		int representation;	//0 - adjacency matrix | 1 - adjacency list | 2 - incidence matrix | 3 - incidence list
 	public:
-		Graph(int _v, int _e, int _r);
+		Graph() : vertex(0), edge(0), representation(4) {};
 		~Graph();
+		void initialize(int _v, int _e, int _r);
 		void set();
-		void show(int _rep);
-		void transform_all();
+		void transform(int _rep);
+		void show();
+		int get_representation() { return representation; }
+		void clear_AL() { vector<vector<int>>().swap(AL); AL.resize(edge + 1); } 
+		void clear_IL() { vector<vector<int>>().swap(IL); IL.resize(vertex + 1); }
 };
 
-Graph::Graph(int _v = 0, int _e = 0, int _r = 0) : vertex(_v), edge(_e), representation(_r) 
+void Graph::initialize(int _v, int _e, int _r) 
 {
+		vertex = _v;
+		edge = _e;
+		representation = _r;
 	//adjacency matrix 
-		AM = new int * [vertex];
-		for(int i = 1; i <= vertex; ++i) 
-			AM[i] = new int [vertex];
+		AM.resize(vertex+1);
+		for(int i = 0; i <= vertex; ++i) 
+			AM[i].resize(vertex);
 		for (int i = 1; i <= vertex; ++i)
 			for (int j = 1; j <= vertex; ++j)
 				AM[i][j] = 0;
 	//adjacency list
-		AL = new list<int> [edge+1];
+		AL.resize(edge+1);
 	//incidence matrix
-		IM = new int * [edge];
-		for (int i = 1; i <= edge; ++i)
-			IM[i] = new int [vertex];
+		IM.resize(edge+1);
+		for (int i = 0; i <= edge; ++i)
+			IM[i].resize(vertex);
 		for (int i = 1; i <= edge; ++i)
 			for (int j = 1; j <= vertex; ++j)
 				IM[i][j] = 0;
 	//incidence list
-		IL = new list<int> [vertex+1];
-}
+		IL.resize(vertex+1);
+};
 
 Graph::~Graph()
 {
-    for(int i = 0; i <= vertex; ++i)
-         delete[] AM[i];
-    delete[] AM;
-    delete[] AL;			//breakpoint
-    for(int i = 0; i <= edge; ++i)	//
-         delete[] IM[i];
-    delete[] IM;
-    delete[] IL;
-}
+};
 
 void Graph::set()
 {
@@ -112,11 +111,11 @@ void Graph::set()
 			IL[v1].push_back(v2);
 		}
 	} 
-}
+};
 
-void Graph::show(int _rep)
+void Graph::show()
 {
-	if (_rep == 0)
+	if (representation == 0)
 	{
 		cout << "Adjacency Matrix" << endl;
 		
@@ -131,17 +130,17 @@ void Graph::show(int _rep)
 				cout << " " << AM[i][j];
 			cout << endl;	
 		}
-	} else if (_rep == 1)
+	} else if (representation == 1)
 	{
 		cout << "Adjacency List" << endl;
 		for (int i = 1; i <= edge; ++i)
 		{
 			cout << i << ":";
-			for (list<int>::iterator it = AL[i].begin(); it != AL[i].end(); ++it)
+			for (vector<int>::iterator it = AL[i].begin(); it != AL[i].end(); ++it)
 				cout << " " << *it;
 			cout << endl;
 		}
-	} else if (_rep == 2)
+	} else if (representation == 2)
 	{
 		cout << "Incidence Matrix" << endl;
 		cout << " ";
@@ -155,64 +154,305 @@ void Graph::show(int _rep)
 				cout << " " <<  setw(3) << IM[i][j];
 			cout << endl;	
 		}
-	} else if (_rep == 3)
+	} else if (representation == 3)
 	{
 		cout << "Incidence List" << endl;
 		for (int i = 1; i <= vertex; ++i)
 		{
 			cout << i << ":";
-			for (list<int>::iterator it = IL[i].begin(); it != IL[i].end(); ++it)
+			for (vector<int>::iterator it = IL[i].begin(); it != IL[i].end(); ++it)
 				cout << " " << *it;
 			cout << endl;
 		}
 	}
-}
+};
 
-void Graph::transform_all()
+void Graph::transform(int _rep)
 {
-	int e = 1;                                     //edge
-	for (int i = 1; i <= vertex; ++i)
-			for (int j = 1; j <= vertex; ++j)
-				if (AM[i][j] == 1)
-				{
-					AL[e].push_back(i);
-					AL[e].push_back(j);
-					++e;
-				}
-	e = 1;				
-	for (int i = 1; i <= vertex; ++i)
-		for (int j = 1; j <= vertex; ++j)
-			if (AM[i][j] == 1 && i != j)
-			{
-				IM[e][i] = -1;
-				IM[e][j] = 1;
-				++e;
-			} else if (AM[i][j] == 1 && i == j)
-			{
-				IM[e][j] = 2;
-				++e;
-			}
-	for (int i = 1; i <= vertex; ++i)
-			for (int j = 1; j <= vertex; ++j)
-				if (AM[i][j] == 1)
-					IL[i].push_back(j);
-}
+	if (representation == 0)
+	{
+		switch (_rep)
+		{
+			case 1:
+					{
+						this->clear_AL();
+						int e = 1;                                     //edge
+						for (int i = 1; i <= vertex; ++i)
+							for (int j = 1; j <= vertex; ++j)
+								if (AM[i][j] == 1)
+								{
+									AL[e].push_back(i);
+									AL[e].push_back(j);
+									++e;
+								}
+						representation = 1;
+					}
+					break;
+			case 2:
+					{
+					    int e = 1;									//edge
+						for (int i = 1; i <= vertex; ++i)
+							for (int j = 1; j <= vertex; ++j)
+								if (AM[i][j] == 1 && i != j)
+								{
+									IM[e][i] = -1;
+									IM[e][j] = 1;
+									++e;
+								} else if (AM[i][j] == 1 && i == j)
+								{
+									IM[e][j] = 2;
+									++e;
+								} 
+						representation = 2;
+					}
+					break;
+			case 3:	
+					{
+						this->clear_IL();
+						for (int i = 1; i <= vertex; ++i)
+							for (int j = 1; j <= vertex; ++j)
+								if (AM[i][j] == 1)
+									IL[i].push_back(j);
+						representation = 3;
+					}
+					break;
+		}				
+	} else if (representation == 1)
+	{
+		switch (_rep)
+		{
+			case 0:
+					{
+						for (int i = 1; i <= edge; ++i)
+							AM[*(AL[i].begin())][*(AL[i].end() - 1)] = 1;
+						representation = 0;
+					}
+					break;
+			case 2:
+					{
+						for (int i = 1; i <= edge; ++i)
+						{
+							if (*(AL[i].begin()) != *(AL[i].end() - 1))
+							{
+								IM[i][*(AL[i].begin())] = -1;
+								IM[i][*(AL[i].end() - 1)] = 1;
+							} else
+								IM[i][*(AL[i].begin())] = 2;
+						}
+						representation = 2;
+					}
+					break;
+			case 3:	
+					{
+						this->clear_IL();
+						for (int i = 1; i <= edge; ++i)
+							IL[*(AL[i].begin())].push_back(*(AL[i].end() - 1));
+						representation = 3;
+					}	
+					break;
+		}
+	} else if (representation == 2)
+	{
+		switch (_rep)
+		{
+			case 0:
+					{
+						for (int i = 1; i <= edge; ++i)
+						{
+								int tmp_1{0};
+						        int tmp_2{0};
+								for (int j = 1; j <= vertex; ++j)
+								{
+									if (IM[i][j] == 1)
+										tmp_1 = j;
+									else if (IM[i][j] == -1)
+										tmp_2 = j;
+									else if (IM[i][j] == 2)
+									{
+										AM[j][j] = 1;
+										break;
+									}
+								}
+								if (tmp_1 != 0 && tmp_2 != 0)
+									AM[tmp_2][tmp_1] = 1;
+						}
+						representation = 0;
+					}
+					break;
+			case 1:
+					{
+						this->clear_AL();
+						for (int i = 1; i <= edge; ++i)
+						{
+								int tmp_1{0};
+						        int tmp_2{0};
+								for (int j = 1; j <= vertex; ++j)
+								{
+									if (IM[i][j] == 1)
+										tmp_1 = j;
+									else if (IM[i][j] == -1)
+										tmp_2 = j;
+									else if (IM[i][j] == 2)
+									{
+										AL[i].push_back(j);
+										AL[i].push_back(j);
+										break;
+									}
+								}
+								if (tmp_1 != 0 && tmp_2 != 0)
+								{
+									AL[i].push_back(tmp_2);
+									AL[i].push_back(tmp_1);
+								}
+						}
+						representation = 1;
+					}
+					break;
+			case 3:	
+					{
+						this->clear_IL();
+						for (int i = 1; i <= edge; ++i)
+						{
+								int tmp_1{0};
+						        int tmp_2{0};
+								for (int j = 1; j <= vertex; ++j)
+								{
+									if (IM[i][j] == 1)
+										tmp_1 = j;
+									else if (IM[i][j] == -1)
+										tmp_2 = j;
+									else if (IM[i][j] == 2)
+									{
+										IL[j].push_back(j);
+										break;
+									}
+								}
+								if (tmp_1 != 0 && tmp_2 != 0)
+									IL[tmp_2].push_back(tmp_1);
+						}
+						representation = 3;
+					}
+					break;
+		}
+	} else if (representation == 3)
+	{
+		switch (_rep)
+		{
+			case 0:
+					{
+						for (int i = 1; i <= vertex; ++i)
+							for (vector<int>::iterator it = IL[i].begin(); it != IL[i].end(); ++it)
+								AM[i][*it] = 1;
+						representation = 0;
+					}
+					break;
+			case 1:
+					{
+						this->clear_AL();
+						int e = 1;
+						for (int i = 1; i <= vertex; ++i)
+							for (vector<int>::iterator it = IL[i].begin(); it != IL[i].end(); ++it)
+							{
+								AL[e].push_back(i);
+								AL[e].push_back(*it);
+								++e;
+							}
+						representation = 1;
+					}
+					break;
+			case 2:	
+					{
+						int e = 1;
+						for (int i = 1; i <= vertex; ++i)
+							for (vector<int>::iterator it = IL[i].begin(); it != IL[i].end(); ++it)
+							{
+								if (i != *it)
+								{
+									IM[e][i] = -1;
+									IM[e][*it] = 1;
+									++e;
+								} else
+								{
+									IM[e][i] = 2;
+									++e;
+								}
+							}	
+						representation = 2;
+					}
+					break;
+		}
+	}
+};
 
 int main()
 {
-	Graph g(6, 7, 0);
+	int choice;
+	int choice_2;
+	int vertex;
+	int edge;
+	int representation;
+	Graph obj;
 	
-	g.set();
-	
-	g.transform_all();
-
-	g.show(0);
-	g.show(1);
-	g.show(2);
-	g.show(3);
-	
-	cin.get();
-	cin.get();
+	cout << "\033[0;36m" << "Directed Graph" << "\033[m"<< endl;
+	do
+	{
+		cout << "Current Representation: ";
+		switch(obj.get_representation())
+		{
+			case 0:
+						cout << "\033[0;34m" << "Adjacency Matrix" << "\033[m" << endl;
+						break;
+			case 1:
+						cout << "\033[0;34m" << "Adjacency List" << "\033[m" << endl;
+						break;
+			case 2:
+						cout << "\033[0;34m" << "Incidence Matrix" << "\033[m" << endl;
+						break;
+			case 3:
+						cout << "\033[0;34m" << "Incidence List" << "\033[m" << endl;
+						break;
+			case 4:
+						cout << "\033[0;34m" <<  "No Object" << "\033[m" <<  endl;
+						break;
+		}
+		cout << "1. Create object" << endl;
+		cout << "2. Transform" << endl;
+		cout << "3. Show" << endl;
+		cout << "4. Clear" << endl;
+		cout << "5. Exit" << endl;
+		cin >> choice;
+		switch (choice)
+		{
+			case 1: 
+						cout << "Number of vertices: ";
+						cin >> vertex;
+						cout << "Number of edges: ";
+						cin >> edge;
+						cout << "Reperesentation" << endl;
+						cout << "1. Adjacency Matrix" << endl;
+						cout << "2. Adjacency List" << endl;
+						cout << "3. Incidence Matrix" << endl;
+						cout << "4. Incidence List" << endl;
+						cin >> representation;
+						obj.initialize(vertex,edge,representation - 1);
+						obj.set();
+						break;
+			case  2:
+						cout << "1. ->Adjacency Matrix" << endl;
+						cout << "2. ->Adjacency List" << endl;
+						cout << "3. ->Incidence Matrix" << endl;
+						cout << "4. ->Incidence List" << endl;
+						cin >> choice_2;
+						obj.transform(choice_2 - 1);
+						break;
+			case 3:
+						obj.show();
+						break;
+			case 4:
+						system("clear");
+						break;
+		}
+	} while (choice != 5);
 	
 	return 0;
 }
