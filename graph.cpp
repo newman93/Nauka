@@ -263,8 +263,8 @@ void Graph::transform(int _rep)
 					{
 						for (int i = 1; i <= edge; ++i)
 						{
-							int tmp_1{0};
-						        int tmp_2{0};
+								int tmp_1{0};
+						        	int tmp_2{0};
 								for (int j = 1; j <= vertex; ++j)
 								{
 									if (IM[i][j] == 1)
@@ -288,8 +288,8 @@ void Graph::transform(int _rep)
 						this->clear_AL();
 						for (int i = 1; i <= edge; ++i)
 						{
-							int tmp_1{0};
-						        int tmp_2{0};
+								int tmp_1{0};
+						        	int tmp_2{0};
 								for (int j = 1; j <= vertex; ++j)
 								{
 									if (IM[i][j] == 1)
@@ -317,8 +317,8 @@ void Graph::transform(int _rep)
 						this->clear_IL();
 						for (int i = 1; i <= edge; ++i)
 						{
-							int tmp_1{0};
-						        int tmp_2{0};
+								int tmp_1{0};
+						        	int tmp_2{0};
 								for (int j = 1; j <= vertex; ++j)
 								{
 									if (IM[i][j] == 1)
