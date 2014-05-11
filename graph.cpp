@@ -10,9 +10,9 @@ using namespace std;
 class Graph
 {
 	private:
-		int **AM;			//dynamic allocation  | adjacency matrix
+		int **AM;		//dynamic allocation  | adjacency matrix
 		list<int> *AL;		// list | adjacency list
-		int **IM;			//dynamic allociation | incidence matrix
+		int **IM;		//dynamic allociation | incidence matrix
 		list<int> *IL;		// list | incidence list
 		int vertex;
 		int edge;
@@ -52,7 +52,7 @@ Graph::~Graph()
     for(int i = 0; i <= vertex; ++i)
          delete[] AM[i];
     delete[] AM;
-    delete[] AL;
+    delete[] AL;			//breakpoint
     for(int i = 0; i <= edge; ++i)	//
          delete[] IM[i];
     delete[] IM;
