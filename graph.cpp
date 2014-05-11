@@ -56,6 +56,10 @@ void Graph::initialize(int _v, int _e, int _r)
 
 Graph::~Graph()
 {
+	vector<vector<int>>().swap(AM);
+	vector<vector<int>>().swap(AL);
+	vector<vector<int>>().swap(IM);
+	vector<vector<int>>().swap(IL);
 };
 
 void Graph::set()
@@ -259,7 +263,7 @@ void Graph::transform(int _rep)
 					{
 						for (int i = 1; i <= edge; ++i)
 						{
-								int tmp_1{0};
+							int tmp_1{0};
 						        int tmp_2{0};
 								for (int j = 1; j <= vertex; ++j)
 								{
@@ -284,7 +288,7 @@ void Graph::transform(int _rep)
 						this->clear_AL();
 						for (int i = 1; i <= edge; ++i)
 						{
-								int tmp_1{0};
+							int tmp_1{0};
 						        int tmp_2{0};
 								for (int j = 1; j <= vertex; ++j)
 								{
@@ -313,7 +317,7 @@ void Graph::transform(int _rep)
 						this->clear_IL();
 						for (int i = 1; i <= edge; ++i)
 						{
-								int tmp_1{0};
+							int tmp_1{0};
 						        int tmp_2{0};
 								for (int j = 1; j <= vertex; ++j)
 								{
