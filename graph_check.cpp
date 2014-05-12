@@ -12,6 +12,8 @@ class Graph
 		vector<vector <int>> AM;	// adjacency matrix
 		int vertex;
 		int edge;
+		bool *visited;
+		bool is_cyclic_util(int _v, bool _visited[], int _parent);
 	public:
 		Graph() : vertex(0), edge(0) {};
 		~Graph();
@@ -37,11 +39,15 @@ void Graph::initialize(int _v, int _e)
 		for (int i = 1; i <= vertex; ++i)
 			for (int j = 1; j <= vertex; ++j)
 				AM[i][j] = 0;
+		visited = new bool[vertex + 1];
+		for(int i = 1; i <= vertex; ++i) 
+			visited[i] = false;
 };
 
 Graph::~Graph()
 {	
 	vector<vector<int>>().swap(AM);
+	delete[] visited;
 };
 
 void Graph::set()
@@ -117,9 +123,21 @@ bool Graph::whether_the_graph_is_directed()
 			}
 	return flag;
 };
-		
+
+//Theorem: In an undirected graph G, a DFS produces only tree and back edges. 
+//Theorem: An undirected graph is acyclic iff a DFS yields no back edges. 
+//	- If acyclic, there are no back edges (back edge implies a cycle) 
+//	- If no back edges, then graph is acyclic because 
+//		* DFS will produce only tree 
+//		* Trees are by definition acyclic		
 bool Graph::whether_the_graph_is_acyclic()
 {
+	if (!(this->whether_the_graph_is_directed()))
+	{
+	} else
+	{
+}
+
 };
 		
 bool Graph::whether_the_graph_is_connected()
@@ -155,20 +173,13 @@ bool Graph::whether_the_graph_is_complete()
 	return flag;
 };
 
+
 void show_list_of_verticies(vector<int> _v)
 {
 	cout << "List of verticies:";
 	for (vector<int>::iterator it = _v.begin(); it != _v.end(); ++it)
 		cout << " " << *it;
 	cout << endl;
-};
-
-void yes_no(bool _w)
-{
-	if (_w)
-		cout << "Yes" << endl;
-	else
-		cout << "No" << endl;
 };
 		
 int main()
@@ -206,16 +217,16 @@ int main()
 						obj.show();
 						break;
 			case 3:	
-						yes_no(obj.whether_the_graph_is_directed());
+						obj.whether_the_graph_is_directed()? cout << "Yes" << endl : cout << "No" << endl;
 						break;
 			case 4:			
-						yes_no(obj.whether_the_graph_is_acyclic());
+						obj.whether_the_graph_is_acyclic()? cout << "Yes" << endl : cout << "No" << endl;;
 						break;
 			case 5:			
-						yes_no(obj.whether_the_graph_is_connected());
+						obj.whether_the_graph_is_connected()? cout << "Yes" << endl : cout << "No" << endl;;
 						break;
 			case 6:			
-						yes_no(obj.whether_the_graph_is_complete());
+						obj.whether_the_graph_is_complete()? cout << "Yes" << endl : cout << "No" << endl;;
 						break;
 			case 7:
 						cout << "Vertex: ";
