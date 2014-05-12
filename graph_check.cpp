@@ -95,8 +95,27 @@ vector<int> Graph::to_vertex(int _v)
 	return tmp_2;
 };
 
+//If the graph is undirected, the adjacency matrix is symmetric. 
 bool Graph::whether_the_graph_is_directed()
 {
+	bool flag = false;
+	
+	vector<vector<int>> tmp;
+	tmp.resize(vertex + 1);
+	for (int i = 1; i <= vertex; ++i) 
+		tmp[i].resize(vertex + 1);
+	for (int j = 1; j <= vertex; ++j)
+		for (int i = 1; i <= vertex; ++i)
+			tmp[j][i] = AM[i][j];
+			
+	for (int i = 1; i <= vertex; ++i)
+		for (int j = 1; j <= vertex; ++j)
+			if (tmp[i][j] != AM[i][j])
+			{
+				flag = true;
+				break;
+			}
+	return flag;
 };
 		
 bool Graph::whether_the_graph_is_acyclic()
