@@ -35,18 +35,18 @@ void Graph::initialize(int _v, int _e, int _r)
 		edge = _e;
 		representation = _r;
 	//adjacency matrix 
-		AM.resize(vertex+1);
-		for(int i = 0; i <= vertex; ++i) 
-			AM[i].resize(vertex);
+		AM.resize(vertex + 1);
+		for(int i = 1; i <= vertex; ++i) 
+			AM[i].resize(vertex + 1);
 		for (int i = 1; i <= vertex; ++i)
 			for (int j = 1; j <= vertex; ++j)
 				AM[i][j] = 0;
 	//adjacency list
-		AL.resize(edge+1);
+		AL.resize(edge + 1);
 	//incidence matrix
-		IM.resize(edge+1);
-		for (int i = 0; i <= edge; ++i)
-			IM[i].resize(vertex);
+		IM.resize(edge + 1);
+		for (int i = 1; i <= edge; ++i)
+			IM[i].resize(vertex + 1);
 		for (int i = 1; i <= edge; ++i)
 			for (int j = 1; j <= vertex; ++j)
 				IM[i][j] = 0;
