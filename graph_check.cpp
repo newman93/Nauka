@@ -126,8 +126,33 @@ bool Graph::whether_the_graph_is_connected()
 {
 };
 
+//The adjacency matrix of a complete graph contains all ones except along the diagonal where there are only zeros.
 bool Graph::whether_the_graph_is_complete()
 {
+	bool flag = true; 	
+	
+	for (int i = 1; i <= vertex; ++i)
+		for (int j = 1; j <= vertex; ++j)
+		{
+			if (i == j)
+			{
+				if (AM[i][j] != 0)
+				{
+					flag = false;
+					i = vertex + 1;
+					break;
+				}
+			 } else
+			 {
+				 if (AM[i][j] == 0)
+				 {
+					 flag = false;
+					 i = vertex + 1;
+					 break;
+				 }
+				}
+			}
+	return flag;
 };
 
 void show_list_of_verticies(vector<int> _v)
