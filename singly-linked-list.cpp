@@ -29,7 +29,6 @@ struct Element
 {
 	DataType value;
 	Element<DataType> *next;	
-	Element<DataType> *prev;
 };
 
 template <class DataType>
