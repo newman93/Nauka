@@ -193,7 +193,7 @@ void List<DataType>::insert_at_position(DataType _x, int _p)
 {
 	if (_p > inf.counter + 1)
 	{
-		string exception = "List ends on the earlier position!"; 
+		string exception = "List ends on the earlier position!\n"; 
 		throw exception;
 	} else if ( _p < 0)
 	{
