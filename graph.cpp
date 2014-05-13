@@ -1,6 +1,15 @@
 /*
 	Author: Adrian Kowalski
 */
+
+/*
+	
+	/-----/
+	/  1  /
+	/-----
+	
+*/
+
 #include <iostream>
 #include <iomanip>
 #include <vector>
