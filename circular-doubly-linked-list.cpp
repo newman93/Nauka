@@ -37,7 +37,7 @@ typedef struct el
 
 class List
 {
-	private:
+	private:				//dodac mozliwosc przesuwania ekementow listy
 		typedef struct
 		{
 			int counter;
